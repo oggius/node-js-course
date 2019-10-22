@@ -16,6 +16,14 @@ router
         ctx.body = greetings(ctx.request.body.username);
     });
 
+app.use((ctx, next) => {
+    const start = Date.now();
+    return next().then(() => {
+        const ms = Date.now() - start;
+        console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+    })
+});
+
 app
     .use(bodyParser())
     .use(router.routes())
