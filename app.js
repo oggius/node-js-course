@@ -3,17 +3,22 @@ const Router = require('koa-router');
 const bodyparser = require('koa-bodyparser');
 const initRoutes = require('./src/routes');
 
+const DB = require('./src/initializers/db');
+
 const app = new Koa();
 const router = new Router();
 
+const database = new DB();
+database.getItems()
+    .then(data => console.log(data));
+
 initRoutes(router);
+
 app
     .use(bodyparser())
     .use(router.routes())
     .use(router.allowedMethods());
 
-app.listen(3000);
-
-module.exports = {
-    app
-}
+module.exports = app.listen(3000, () => {
+    console.log('Server started');
+});
