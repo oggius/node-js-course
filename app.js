@@ -7,10 +7,23 @@ const DB = require('./src/initializers/db');
 
 const app = new Koa();
 const router = new Router();
+const db = new DB();
 
-const database = new DB();
-database.getItems()
-    .then(data => console.log(data));
+let itemId;
+db.getItems()
+    .then(data => {
+        console.log(data);
+        return db.createItem({price: 100, name: 'Test'})
+    })
+    .then(id => {
+        console.log(id);
+        itemId = id;
+        return db.getItems();
+    })
+    .then(async items =>  {
+        console.log(items);
+        await db.deleteItem(itemId);
+    });
 
 initRoutes(router);
 

@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon app.js",
+    "debug": "nodemon $NODE_DEBUG_OPTION app.js",
     "test": "mocha --exit"
   },
   "keywords": [],
@@ -17,7 +18,8 @@
     "koa-router": "^7.4.0",
     "livr": "^2.3.0",
     "minimist": "^1.2.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "chai": "^4.2.0",

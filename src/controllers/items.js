@@ -1,12 +1,13 @@
 const LIVR = require('livr');
-const db = require('../db_old');
+const DB = require('../initializers/db');
+
+const db = new DB();
 
 const itemsController = {
-
-    getItems(ctx, next) {
+    async getItems(ctx, next) {
         console.log('method: getItem');
         console.log(ctx.headers);
-        ctx.body = db.getItems();
+        ctx.body = await db.getItems();
     },
 
     getItem(ctx, next) {
@@ -31,20 +32,19 @@ const itemsController = {
         }
     },
 
-    createItem(ctx, next) {
+    async createItem(ctx, next) {
         if (ctx.headers.authorization === 'admin') {
-            db.writeItem(ctx.request.body);
-            ctx.body = 'created item';
+            ctx.body = await db.createItem(ctx.request.body);
         } else {
             ctx.status = 401;
             ctx.body = 'you are not allowed';
         }
     },
 
-    deleteItem(ctx, next) {
-        db.deleteItem(Number(ctx.params.itemId));
+    async deleteItem(ctx, next) {
+        await db.deleteItem(ctx.params.itemId);
         ctx.status = 204;
-        ctx.body = '';
+        ctx.body = 'Item deleted';
     },
 
     updateItem(ctx) {
