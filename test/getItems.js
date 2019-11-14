@@ -1,25 +1,18 @@
-const supertest = require('supertest');
-const chai = require('chai');
-const server = require('../app');
+const request = require('supertest');
+const chai    = require('chai');
+const app     = require('../app.js');
 
 const expect = chai.expect;
 
-afterEach(() => server.close());
+describe('GET /items', () => {
+    it('Should return list of items', async () => {
+        const response = await request(app)
+            .get('/items')
+            .expect(200);
 
-describe('GET requests', () => {
-    describe('getItem',() => {
-        it('should return items list', async () => {
-            const response = await supertest(server)
-                .get('/items')
-                .expect(200)
-                .expect(/Water/)
-                .expect(/Bread/);
+        const { body } = response;
 
-            const { body } = response;
-
-            expect(body).to.be.an('array');
-            expect(body.length).to.be.equal(2);
-            expect(body[0].price).to.be.equal(100);
-        });
-    });
+        expect(body).to.be.an('array');
+        expect(body).to.have.lengthOf(2);
+    })
 });
