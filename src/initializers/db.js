@@ -30,6 +30,10 @@ class DB {
         await writeFileAsync(this.dbFilename, JSON.stringify( items ));
     }
 
+    async truncateDb() {
+        await writeFileAsync(this.dbFilename, '[]');
+    }
+
     async getItems() {
         const items = await this.readDb();
 
@@ -37,7 +41,7 @@ class DB {
     }
 
     async getItem(id) {
-        const { items } = await this.readDb();
+        const items = await this.readDb();
 
         return items.filter(product => product.id === id)[0];
     };
